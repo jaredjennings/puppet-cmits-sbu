@@ -45,7 +45,7 @@ class sbu::server(
     # there are some configurations that aren't included in the nss
     # site config file
     file { '/etc/httpd/conf.d':
-        owner => root, group => 0, mode => 0600,
+        owner => root, group => 0, mode => '0600',
         source => 'puppet:///modules/sbu/etc-httpd-conf.d',
     }
 
@@ -79,7 +79,7 @@ class sbu::server(
     }
 
     pki::nss::db { $dbdir:
-        owner => apache, group => 0, mode => 0600,
+        owner => apache, group => 0, mode => '0600',
         sqlite => false,
         pwfile => true,
     }
@@ -122,7 +122,7 @@ class sbu::server(
 
     file { "/var/www/virus-checkpoint":
         ensure => directory,
-        owner => apache, group => 0, mode => 0700,
+        owner => apache, group => 0, mode => '0700',
         require => Package['httpd'],
     }
 
@@ -130,12 +130,12 @@ class sbu::server(
 
     file { "/var/www/html/styles":
         ensure => directory,
-        owner => root, group => 0, mode => 0644,
+        owner => root, group => 0, mode => '0644',
         require => Package['httpd'],
     }
     file { "/var/www/html/pages":
         ensure => directory,
-        owner => root, group => 0, mode => 0644,
+        owner => root, group => 0, mode => '0644',
         require => Package['httpd'],
     }
 
@@ -162,14 +162,14 @@ class sbu::server(
         default        => root,
     }
     $os_exec_perms = $mode ? {
-        'development'  => 0750,
-        'installation' => 0550,
-        default        => 0550,
+        'development'  => '0750',
+        'installation' => '0550',
+        default        => '0550',
     }
     $os_noexec_perms = $mode ? {
-        'development'  => 0640,
-        'installation' => 0440,
-        default        => 0440,
+        'development'  => '0640',
+        'installation' => '0440',
+        default        => '0440',
     }
 
     file { [
@@ -207,21 +207,21 @@ class sbu::server(
     file {
         '/etc/cron.morningly/sbu_approve_cron':
             ensure => present,
-            owner => root, group => 0, mode => 0700,
+            owner => root, group => 0, mode => '0700',
             content => "#!/bin/sh\n\
 /sbin/runuser apache -s /bin/sh -c \
   /var/www/sbu-apps/authapp/script/approve_cron.py\n";
 
         '/etc/cron.morningly/sbu_expire_cron':
             ensure => present,
-            owner => root, group => 0, mode => 0700,
+            owner => root, group => 0, mode => '0700',
             content => "#!/bin/sh\n\
 /sbin/runuser apache -s /bin/sh -c \
   /var/www/sbu-apps/authapp/script/expire_cron.py\n";
 
         '/etc/cron.morningly/sbu_expiringSoon_cron.py':
             ensure => present,
-            owner => root, group => 0, mode => 0700,
+            owner => root, group => 0, mode => '0700',
             content => "#!/bin/sh\n\
 /sbin/runuser apache -s /bin/sh -c \
   /var/www/sbu-apps/authapp/script/expiringSoon_cron.py\n";
@@ -231,7 +231,7 @@ class sbu::server(
 
         '/etc/cron.morningly/sbu_inactivity_cron.py':
             ensure => present,
-            owner => root, group => 0, mode => 0700,
+            owner => root, group => 0, mode => '0700',
             content => "#!/bin/sh
 cat /var/log/httpd/ssl_activity_log | \\
   /sbin/runuser apache -s /bin/sh -c \\
@@ -245,14 +245,14 @@ cat /var/log/httpd/ssl_activity_log | \\
 # Subversion repositories, which mod\_dav\_svn takes care of.
     file { '/var/www/svn-html':
         ensure => directory,
-        owner => root, group => apache, mode => 0755,
+        owner => root, group => apache, mode => '0755',
         require => Package['httpd'],
     }
 
 # Install the SELinux rules that let SBU apps log errors through the syslog.
     $selmoduledir = "/usr/share/selinux/targeted"
     file { "${selmoduledir}/sbu_apps.pp":
-        owner => root, group => 0, mode => 0644,
+        owner => root, group => 0, mode => '0644',
         source => "puppet:///modules/sbu/selinux/\
 sbu_apps.selinux.pp",
     }
@@ -269,28 +269,28 @@ sbu_apps.selinux.pp",
 
         "/usr/local/bin/tail_httpd_access":
             ensure => present,
-            owner => root, group => 0, mode => 0755,
+            owner => root, group => 0, mode => '0755',
             content => "#!/bin/sh\n\
 /usr/bin/tail -f /var/log/messages | \
 grep --line-buffered httpd__access\n";
 
         "/usr/local/bin/tail_httpd_error":
             ensure => present,
-            owner => root, group => 0, mode => 0755,
+            owner => root, group => 0, mode => '0755',
             content => "#!/bin/sh\n\
 /usr/bin/tail -f /var/log/messages | \
 grep --line-buffered 'httpd[^_]'\n";
 
         "/usr/local/bin/tail_httpd":
             ensure => present,
-            owner => root, group => 0, mode => 0755,
+            owner => root, group => 0, mode => '0755',
             content => "#!/bin/sh\n\
 /usr/bin/tail -f /var/log/messages | \
 grep --line-buffered httpd\n";
 
         "/usr/local/bin/HR":
             ensure => present,
-            owner => root, group => 0, mode => 0755,
+            owner => root, group => 0, mode => '0755',
             content => "#!/bin/sh\n\
 /sbin/service httpd restart\n";
 

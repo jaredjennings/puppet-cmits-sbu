@@ -28,7 +28,7 @@ class sbu::vagrant(
     }
     file { '/etc/httpd/conf.d/Data.perms':
         ensure => present,
-        owner => root, group => 0, mode => 0600,
+        owner => root, group => 0, mode => '0600',
         content => '',
     }
 }

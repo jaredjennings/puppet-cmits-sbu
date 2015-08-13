@@ -23,11 +23,11 @@
 class sbu::trac {
     file { "/var/www/wsgi-bin":
         ensure => directory,
-        owner => root, group => 0, mode => 0755,
+        owner => root, group => 0, mode => '0755',
     }
     file { "/var/www/wsgi-bin/trac.wsgi":
         ensure => file,
-        owner => root, group => 0, mode => 0755,
+        owner => root, group => 0, mode => '0755',
         source => "puppet:///modules/sbu/trac/trac.wsgi",
     }
 
@@ -42,18 +42,18 @@ class sbu::trac {
     file {
         "$tracs":
             ensure => directory,
-            owner => root, group => 0, mode => 0755;
+            owner => root, group => 0, mode => '0755';
         "$trac_common":
             ensure => directory,
-            owner => root, group => 0, mode => 0755;
+            owner => root, group => 0, mode => '0755';
         "$trac_common/templates":
             ensure => directory,
-            owner => root, group => 0, mode => 0755;
+            owner => root, group => 0, mode => '0755';
         "$trac_common/templates/site.html":
-            owner => root, group => 0, mode => 0644,
+            owner => root, group => 0, mode => '0644',
             source => 'puppet:///modules/sbu/trac/site.html';
         "$trac_common/templates/classbar.html":
-            owner => root, group => 0, mode => 0644,
+            owner => root, group => 0, mode => '0644',
             source => 'puppet:///modules/sbu/trac/classbar.html';
     }
 
